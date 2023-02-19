@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+         <variable
+             name="viewModel"
+             type="com.nour.ieeeevent.ui.HomeViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.HomeFragment"
+
+        >
+
+
+        <TextView
+            android:id="@+id/nameTextView"
+            android:layout_width="@dimen/_300sdp"
+            android:layout_height="@dimen/_50sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/checkImageContainer"
+            android:gravity="center"
+            android:text="@{viewModel.name}"
+            />
+
+        <RelativeLayout
+            android:id="@+id/checkImageContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="@dimen/_48sdp"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:layout_gravity="center">
+        <View
+            android:id="@+id/ellipse_1"
+            android:layout_width="@dimen/_200sdp"
+            android:layout_height="@dimen/_200sdp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            changeOutEllipseBackground="@{viewModel.imageState}"
+            />
+        <View
+            android:id="@+id/ellipse_3"
+            android:layout_width="@dimen/_188sdp"
+            android:layout_height="@dimen/_188sdp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            changeMidEllipseBackground ="@{viewModel.imageState}"
+            />
+
+        <ImageView
+            android:layout_width="@dimen/_172sdp"
+            android:layout_height="@dimen/_172sdp"
+            android:scaleType="center"
+            android:src="@drawable/no_vib_image"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            changeInternalEllipseBackground ="@{viewModel.imageState}"
+            />
+        </RelativeLayout>
+
+        <ImageButton
+            android:id="@+id/scannerButton"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_marginEnd="@dimen/_32sdp"
+            android:layout_marginBottom="@dimen/_32sdp"
+            android:src="@drawable/ic_baseline_qr_code_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
