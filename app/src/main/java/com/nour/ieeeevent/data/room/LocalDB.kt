@@ -1,7 +1,5 @@
 package com.nour.ieeeevent.data.room
 
-
-import android.app.Application
 import android.content.Context
 import androidx.room.Room
 
@@ -12,7 +10,7 @@ object LocalDB {
         return Room.databaseBuilder(
             context.applicationContext ,
             RoomDB::class.java, "Attender.db"
-        ).build().getDio()
+        ).fallbackToDestructiveMigration().build().getDio()
     }
 
 }
