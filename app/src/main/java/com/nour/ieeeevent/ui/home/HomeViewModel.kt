@@ -1,4 +1,4 @@
-package com.nour.ieeeevent.ui
+package com.nour.ieeeevent.ui.home
 
 
 import android.annotation.SuppressLint
@@ -15,19 +15,19 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel (var repository: Repository) : ViewModel(){
 
-    val name = MutableLiveData<String>()
+    val name = MutableLiveData<String?>()
     var imageState = MutableLiveData<Int?>()
 
 
     @SuppressLint("SuspiciousIndentation")
-    fun getAttenderFromDB(qrAttender: Attender ) {
+    fun getAttenderFromDB(id: Int ) {
         viewModelScope.launch (Dispatchers.IO){
-       val sheetAttender = repository.getAttender(qrAttender.id)
+       val sheetAttender = repository.getAttender(id)
             if(sheetAttender==null)
                   setImageNotFoundInUi()
             else{
                     upDateUi(sheetAttender)
-                repository.upDateAttenderCallInSheet("A${qrAttender.id}")
+                repository.upDateAttenderCallInSheet("A${id}")
         }}
     }
 

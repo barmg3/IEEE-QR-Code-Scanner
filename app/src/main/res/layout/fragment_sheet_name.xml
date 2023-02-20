@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+      <variable
+          name="viewModel"
+          type="com.nour.ieeeevent.ui.sheetName.SheetNameViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000000"
+        android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar.Bridge"
+        tools:context=".ui.sheetName.SheetNameFragment">
+
+
+        <ImageView
+            android:id="@+id/imageSheetName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/singin_pic"
+            android:scaleType="centerCrop"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/welcomeTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Welcome Back!"
+            android:textColor="#80cdc1"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_64sdp"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageSheetName" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/sheetNameInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_24sdp"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:hint="Sheet Name"
+            app:endIconMode="clear_text"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxStrokeColor="#35978f"
+            app:hintTextColor="#35978f"
+            android:textColorHint="#80cdc1"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/welcomeTextView"
+            tools:ignore="MissingClass">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/sheetName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#f5f5f5"
+                android:textSize="24sp"
+                android:text="@={viewModel.sheetName}"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.cardview.widget.CardView
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_50sdp"
+            android:background="#000000"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sheetNameInputLayout"
+            android:layout_marginTop="@dimen/_24sdp"
+            app:cardCornerRadius="@dimen/_8sdp">
+
+            <Button
+                android:id="@+id/nextButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Next"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:onClick="@{() -> viewModel.checkIfSheetNameTrue()}"
+                android:background="@drawable/next_bt" />
+        </androidx.cardview.widget.CardView>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

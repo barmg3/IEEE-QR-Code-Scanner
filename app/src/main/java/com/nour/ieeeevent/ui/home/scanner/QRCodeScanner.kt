@@ -1,12 +1,10 @@
-package com.nour.ieeeevent.ui
+package com.nour.ieeeevent.ui.home.scanner
 
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import android.widget.Toast
-import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.gms.tasks.Task
@@ -15,7 +13,7 @@ import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.common.InputImage
-import com.nour.ieeeevent.util.QRCodeConverter.convertQRCodeTextToAttender
+import com.nour.ieeeevent.util.QRCodeConverter.getIdFromQrCodeText
 import java.lang.Exception
 
 
@@ -55,17 +53,14 @@ class QRCodeScanner (private val context: Context,private val qrCodeResult: QRCo
     @SuppressLint("SuspiciousIndentation")
     private fun extractBarcodeInfo(barcodes: List<Barcode>){
         for(barcode in barcodes){
-
           val text = barcode.rawValue
-            Log.e("barcode",text.toString())
             if (!text.isNullOrEmpty())
                    sendBarCodeDetails(text)
-            else Log.e("barcode","isnull"+text)
         }
     }
 
     private fun sendBarCodeDetails(text : String){
-        val attender = convertQRCodeTextToAttender(text)
-        qrCodeResult.getQRCodeResult(attender)
+        val id = getIdFromQrCodeText(text)
+        qrCodeResult.getQRCodeResult(id)
     }
 }
