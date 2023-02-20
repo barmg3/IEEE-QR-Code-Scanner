@@ -6,26 +6,32 @@
     <data>
          <variable
              name="viewModel"
-             type="com.nour.ieeeevent.ui.HomeViewModel" />
+             type="com.nour.ieeeevent.ui.home.HomeViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.HomeFragment"
-
+        tools:context=".ui.home.HomeFragment"
+         android:background="#000000"
         >
 
 
         <TextView
             android:id="@+id/nameTextView"
-            android:layout_width="@dimen/_300sdp"
+            android:layout_width="0dp"
             android:layout_height="@dimen/_50sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/checkImageContainer"
-            android:gravity="center"
-            android:text="@{viewModel.name}"
+            android:gravity="left"
+            android:layout_marginTop="@dimen/_32sdp"
+            android:textSize="22sp"
+            android:textColor="#80cdc1"
+            android:textStyle="bold"
+            android:layout_marginStart="@dimen/_16sdp"
+            android:layout_marginEnd="@dimen/_16sdp"
+            android:text="@{viewModel.name==null||viewModel.name.empty?`Name :`:`Name : `+viewModel.name}"
             />
 
         <RelativeLayout
@@ -75,6 +81,7 @@
             android:layout_marginEnd="@dimen/_32sdp"
             android:layout_marginBottom="@dimen/_32sdp"
             android:src="@drawable/ic_baseline_qr_code_24"
+            android:background="@drawable/scan_button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
