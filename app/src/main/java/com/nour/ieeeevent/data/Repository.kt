@@ -1,32 +1,25 @@
 package com.nour.ieeeevent.data
 
-import android.content.Context
-import android.util.Log
 import com.nour.ieeeevent.data.modeles.Attender
 import com.nour.ieeeevent.data.room.DAO
-import com.nour.ieeeevent.data.room.LocalDB
-import com.nour.ieeeevent.util.Constants
 import com.nour.ieeeevent.util.Constants.GETURL
 import com.nour.ieeeevent.util.Constants.POST_URL
 import com.nour.ieeeevent.util.NetworkUtils.convertDataFromSheetToAttenders
+import com.nour.ieeeevent.util.NetworkUtils.responseRangeIsTrue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import okhttp3.*
-import org.json.JSONObject
 import java.io.IOException
 import java.util.concurrent.TimeUnit
-import java.util.stream.IntStream
 
-class Repository(var context: Context) {
+class Repository(var dao: DAO) {
 
-   var  dao : DAO = LocalDB.createRemindersDao(context)
 
    private val okHttpClient = OkHttpClient.Builder().apply {
       callTimeout(60000, TimeUnit.MILLISECONDS)
       readTimeout(60000, TimeUnit.MILLISECONDS)
    }.build()
-
 
 
    fun getAttender(id : Int): Attender?{
@@ -45,6 +38,18 @@ class Repository(var context: Context) {
       okHttpClient.newCall(request).execute()}
    }
 
+   fun checkIfSheetNameIsTrue(sheetName : String): Boolean {
+      val request = Request.Builder().url(GETURL(sheetName)).build()
+      val response = okHttpClient.newCall(request).execute()
+      return  responseRangeIsTrue(response.body()!!.string())
+
+   }
+
+   fun deleteAllData(){
+      GlobalScope.launch (Dispatchers.IO){
+         dao.deleteAllData()
+      }
+   }
 
    private class CallbackGet(var dio: DAO):Callback{
 
@@ -56,6 +61,7 @@ class Repository(var context: Context) {
          val sheet = response.body()?.string()
          if (!sheet.isNullOrEmpty()){
              val attenders = convertDataFromSheetToAttenders(sheet)
+            if (!attenders.isNullOrEmpty())
              dio.setAllAttenders(attenders)}
       }
 

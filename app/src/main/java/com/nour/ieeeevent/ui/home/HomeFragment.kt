@@ -1,26 +1,26 @@
-package com.nour.ieeeevent.ui
+package com.nour.ieeeevent.ui.home
 
 import android.content.ContentValues
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import com.nour.ieeeevent.data.modeles.Attender
 import com.nour.ieeeevent.databinding.FragmentHomeBinding
+import com.nour.ieeeevent.ui.home.scanner.QRCodeResult
+import com.nour.ieeeevent.ui.home.scanner.QRCodeScanner
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+
 import java.io.IOException
 
 
-class HomeFragment : Fragment(),QRCodeResult {
+class HomeFragment : Fragment(), QRCodeResult {
 
     lateinit var binding : FragmentHomeBinding
     private lateinit var cameraRegister : ActivityResultLauncher<Intent>
@@ -33,7 +33,7 @@ class HomeFragment : Fragment(),QRCodeResult {
         savedInstanceState: Bundle?
     ): View? {
          binding = FragmentHomeBinding.inflate(inflater)
-        qrCodeScanner=QRCodeScanner(requireContext(),this)
+        qrCodeScanner= QRCodeScanner(requireContext(),this)
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
@@ -44,6 +44,8 @@ class HomeFragment : Fragment(),QRCodeResult {
         super.onViewCreated(view, savedInstanceState)
         cameraRegister =registerForActivityResult(ActivityResultContracts.StartActivityForResult(),this::galleryResult)
         binding.scannerButton.setOnClickListener(this::openCamera)
+
+
     }
 
     private fun openCamera(view: View){
@@ -62,8 +64,8 @@ class HomeFragment : Fragment(),QRCodeResult {
         qrCodeScanner.getTextQrCodes(uriImage)
     }catch (e : IOException){}
 
-    override fun getQRCodeResult(attender: Attender) {
-         viewModel.getAttenderFromDB(attender)
+    override fun getQRCodeResult(id: Int) {
+         viewModel.getAttenderFromDB(id)
     }
 
 }
