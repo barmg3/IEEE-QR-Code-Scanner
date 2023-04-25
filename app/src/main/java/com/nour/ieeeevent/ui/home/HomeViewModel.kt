@@ -1,55 +1,45 @@
 package com.nour.ieeeevent.ui.home
 
-
-import android.annotation.SuppressLint
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.nour.ieeeevent.data.Repository
-import com.nour.ieeeevent.data.modeles.Attender
-import com.nour.ieeeevent.util.Constants.Image_STATE_NOT_FOUND
-import com.nour.ieeeevent.util.Constants.Image_STATE_NOT_VIB
-import com.nour.ieeeevent.util.Constants.Image_STATE_VIB
+import androidx.lifecycle.*
+import com.nour.ieeeevent.data.retrofit.State
+import com.nour.ieeeevent.domain.usesCase.DeleteAllAttendersUseCase
+import com.nour.ieeeevent.domain.usesCase.GetAttenderDataByIdUseCase
+import com.nour.ieeeevent.domain.usesCase.UpDateAttenderBackgroundColorUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class HomeViewModel (var repository: Repository) : ViewModel(){
+@HiltViewModel
+class HomeViewModel @Inject constructor(
+    private val getAttenderDataByIdUseCase: GetAttenderDataByIdUseCase,
+    private val upDateAttenderBackgroundColorUseCase: UpDateAttenderBackgroundColorUseCase,
+    private val deleteAllAttendersUseCase: DeleteAllAttendersUseCase
+) : ViewModel() {
 
-    val name = MutableLiveData<String?>()
-    var imageState = MutableLiveData<Int?>()
+    private val _uiState = MutableLiveData(HomeUiState())
+    val uiState: LiveData<HomeUiState> = _uiState
 
-
-    @SuppressLint("SuspiciousIndentation")
-    fun getAttenderFromDB(id: Int ) {
-        viewModelScope.launch (Dispatchers.IO){
-       val sheetAttender = repository.getAttender(id)
-            if(sheetAttender==null)
-                  setImageNotFoundInUi()
-            else{
-                    upDateUi(sheetAttender)
-                repository.upDateAttenderCallInSheet("A${id}")
-        }}
+    fun getAttenderDataById(id: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val attender = getAttenderDataByIdUseCase(id)
+            if (attender != null) {
+                _uiState.postValue(_uiState.value!!.copy(attender = attender))
+                upDateAttenderBackgroundColor(id)
+            } else _uiState.postValue(_uiState.value!!.copy(errorMessage = "No found attender with this Id"))
+        }
     }
 
-    private fun setImageNotFoundInUi() {
-        imageState.postValue(Image_STATE_NOT_FOUND)
+    private suspend fun upDateAttenderBackgroundColor(id: Int) {
+        upDateAttenderBackgroundColorUseCase(id).last().let { result ->
+            if (result is State.Failure)
+                _uiState.postValue(_uiState.value!!.copy(errorMessage = result.message))
+        }
     }
 
-    private fun upDateUi(attender : Attender) {
-        name.postValue(attender.name)
-        val state = if (attender.VIP.toInt() == Image_STATE_VIB ) Image_STATE_VIB
-                            else  Image_STATE_NOT_VIB
-        imageState.postValue(state)
-    }
+    fun deleteAllAttenders() = viewModelScope.launch(Dispatchers.IO) { deleteAllAttendersUseCase() }
 
-    fun clearDataFromUi(){
-        name .postValue("")
-        val clearNumber = -2
-        imageState.postValue(clearNumber)
-    }
-
-
-
-
+    fun clearData() = _uiState.postValue(HomeUiState())
 
 }

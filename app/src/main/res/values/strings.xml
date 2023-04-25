@@ -1,5 +1,17 @@
 <resources>
     <string name="app_name">IEEE Event</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="google_sheet_data">Google Sheet Data</string>
+    <string name="number">sheet number</string>
+    <string name="permissionDenied">Please Allow camera permission</string>
+    <string name="deployment_identification_number">deployment identification number</string>
+    <string name="change_sheet"><u>Change the sheet</u></string>
+    <string name="delete_old_data">you want to delete old data?</string>
+    <string name="scan_qr">Scan QR</string>
+    <string name="attendee_name">Attendee Name:</string>
+    <string name="you_re_connected_to">You\'re Connected to</string>
+    <string name="file_name">File Name:</string>
+    <string name="connect">Connect</string>
+    <string name="techne_event" translatable="false">IEEE MSB Technical Event</string>
+    <string name="vip">VIP:</string>
 </resources>

@@ -1,16 +1,21 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.IEEEEvent" parent="Theme.AppCompat.Light.NoActionBar">
-         <item name="colorPrimaryDark">#003c30</item>
-        <item name="android:statusBarColor">#000000</item>
-        <item name="android:navigationBarColor">@color/black</item>
+    <style name="Theme.IEEEEvent" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge">
+         <item name="colorPrimaryDark">#2196F3</item>
 
-
-
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <!-- Navigation bar color. -->
+        <item name="android:navigationBarColor">@color/white</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
+        <item name="android:navigationBarDividerColor" tools:targetApi="o_mr1">#D1D0D0</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
-    <style name="splashScreen" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenAnimatedIcon">@drawable/ieee_logo</item>
-        <item name="windowSplashScreenBackground">#000000</item>
+    <style name="Theme.MySplash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenAnimatedIcon">@drawable/logo</item>
+        <item name="windowSplashScreenBackground">@color/white</item>
         <item name="postSplashScreenTheme">@style/Theme.IEEEEvent</item>
     </style>
+
 </resources>

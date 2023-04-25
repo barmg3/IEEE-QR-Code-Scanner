@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">IEEE Event</string>
+    <string name="google_sheet_data">بيانات ورقة Google</string>
+    <string name="number">رقم الورقه</string>
+    <string name="permissionDenied">يرجى السماح بإذن الكاميرا</string>
+    <string name="deployment_identification_number">رقم تعريف النشر</string>
+    <string name="change_sheet"><u>تغيير الورقة</u></string>
+    <string name="delete_old_data">تريد حذف البيانات القديمه؟</string>
+    <string name="scan_qr">Scan QR</string>
+    <string name="attendee_name">اسم الحاضر:</string>
+    <string name="you_re_connected_to">You\'re Connected to</string>
+    <string name="file_name">اسم الملف:</string>
+    <string name="connect">Connect</string>
+    <string name="vip">شخصية هامه:</string>
+</resources>

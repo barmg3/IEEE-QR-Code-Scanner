@@ -3,21 +3,38 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/sheetNameFragment">
+    app:startDestination="@id/sheetDataFragment">
 
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.nour.ieeeevent.ui.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
-    <fragment
-        android:id="@+id/sheetNameFragment"
-        android:name="com.nour.ieeeevent.ui.sheetName.SheetNameFragment"
-        android:label="fragment_sheet_name"
-        tools:layout="@layout/fragment_sheet_name" >
+        tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_sheetNameFragment_to_homeFragment"
+            android:id="@+id/action_homeFragment_to_cameraXFragment"
+            app:destination="@id/cameraXFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_sheetDataFragment"
+            app:destination="@id/sheetDataFragment"
+            app:popUpTo="@id/nav_graph" />
+    </fragment>
+    <fragment
+        android:id="@+id/sheetDataFragment"
+        android:name="com.nour.ieeeevent.ui.sheetData.SheetDataFragment"
+        android:label="fragment_sheet_name"
+        tools:layout="@layout/fragment_sheet_data" >
+        <action
+            android:id="@+id/action_sheetDataFragment_to_homeFragment"
             app:destination="@id/homeFragment"
             app:popUpTo="@id/nav_graph" />
+    </fragment>
+    <fragment
+        android:id="@+id/cameraXFragment"
+        android:name="com.nour.ieeeevent.ui.cameraX.CameraXFragment"
+        android:label="CameraXFragment"
+        tools:layout="@layout/fragment_camera_x"
+        >
+
+
     </fragment>
 </navigation>

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="white">#FFFFFF</color>
-    <color name="golden">#DFDD0F</color>
-    <color name="light_golden">#E8E643</color>
-    <color name="very_light_golden">#F4F360</color>
     <color name="black">#000000</color>
-    <color xmlns:tools="http://schemas.android.com/tools" name="mtrl_textinput_default_box_stroke_color" tools:override="true">#35978f</color>
+    <color name="colorAccent">#2196F3</color>
+    <color name="potentially_hazardous">#2196F3</color>
+    <color xmlns:tools="http://schemas.android.com/tools" name="mtrl_textinput_default_box_stroke_color" tools:override="true">#2196F3</color>
 </resources>

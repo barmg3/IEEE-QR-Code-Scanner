@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.nour.ieeeevent.ui.sheetData.SheetDataViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar.Bridge"
+        tools:context=".ui.sheetData.SheetDataFragment"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/ieee_logo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_60sdp"
+            android:scaleType="center"
+            android:src="@drawable/ieee_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+        <TextView
+            android:id="@+id/welcomeTextView"
+            style="@style/Widget.AppCompat.TextView.SpinnerItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_50sdp"
+            android:text="@string/google_sheet_data"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ieee_logo" />
+
+
+
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/SheetApiUrlTextInputLayout"
+            android:layout_width="@dimen/_200sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_24sdp"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:hint="@string/deployment_identification_number"
+            app:endIconMode="clear_text"
+            app:boxStrokeColor="#2196F3"
+            app:hintTextColor="#2196F3"
+            android:textColorHint="#1676C3"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/welcomeTextView"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/apiKey"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/_8sdp"
+                android:maxHeight="@dimen/_50sdp"
+                android:text="@={viewModel.uiState.apiKey}"
+                android:ellipsize="end"
+                android:drawableStart="@drawable/baseline_insert_link_24"
+                android:textColor="#1B1919"
+                android:inputType="text"
+                android:textSize="24sp"
+                />
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/sheetIndexTextInputLayout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:hint="@string/number"
+            app:boxStrokeColor="#2196F3"
+            app:hintTextColor="#2196F3"
+            android:textColorHint="#1676C3"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:layout_constraintStart_toEndOf="@id/SheetApiUrlTextInputLayout"
+            app:layout_constraintBottom_toBottomOf="@id/SheetApiUrlTextInputLayout"
+            app:layout_constraintTop_toTopOf="@id/SheetApiUrlTextInputLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/sheetNumber"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingStart="@dimen/_8sdp"
+                android:maxHeight="@dimen/_50sdp"
+                android:gravity="center"
+                android:text="@={viewModel.uiState.sheetNumber}"
+                android:ellipsize="end"
+                android:textColor="#1B1919"
+                android:inputType="number"
+                android:textSize="14sp"
+                />
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/btn_connect"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/next_bt"
+            android:text="@string/connect"
+            android:textColor="#FFFFFF"
+            android:onClick="@{()->viewModel.saveSheetData()}"
+            android:layout_marginTop="@dimen/_40sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/SheetApiUrlTextInputLayout"
+            />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/colorAccent"
+            app:progressState="@{viewModel.uiState.loading}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

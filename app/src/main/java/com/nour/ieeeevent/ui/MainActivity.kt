@@ -2,29 +2,38 @@ package com.nour.ieeeevent.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.navigation.fragment.NavHostFragment
 import com.nour.ieeeevent.R
-import com.nour.ieeeevent.data.Repository
-import org.koin.android.ext.android.inject
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+    val viewModel: MainViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
         setContentView(R.layout.activity_main)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        deleteAllData()
+    override fun onStart() {
+        super.onStart()
+        setStartDestination()
     }
+    private fun setStartDestination(){
+        val navHost =
+            supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment?
+        val navController = navHost!!.navController
 
-    private fun deleteAllData() {
-        val repository : Repository by inject()
-        repository.deleteAllData()
+        val navInflater = navController.navInflater
+        val graph = navInflater.inflate(R.navigation.nav_graph)
+
+        if (viewModel.isAttenderEntityEmpty)
+            graph.setStartDestination(R.id.sheetDataFragment)
+        else
+            graph.setStartDestination(R.id.homeFragment)
+
+        navController.graph = graph
     }
-
-
-
 }

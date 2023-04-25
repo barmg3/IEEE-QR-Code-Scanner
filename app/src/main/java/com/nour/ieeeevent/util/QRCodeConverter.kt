@@ -1,18 +1,17 @@
 package com.nour.ieeeevent.util
 
-import com.nour.ieeeevent.data.modeles.Attender
-import com.nour.ieeeevent.util.Constants.QR_CODE_ID_INDEX
-import com.nour.ieeeevent.util.Constants.QR_CODE_NAME_INDEX
-import com.nour.ieeeevent.util.Constants.QR_CODE_VIB_INDEX
+
+import com.google.mlkit.vision.barcode.common.Barcode
 
 object QRCodeConverter {
 
-
-    fun getIdFromQrCodeText(text : String):Int{
-        val qrCodeInformation = text.split(":")
-        val id = qrCodeInformation[QR_CODE_ID_INDEX].trim().toInt()
-         return id
+    fun Barcode.getId(): Int? {
+        val id = this.rawValue
+        return if (id.isNullOrEmpty()) null
+        else {
+            val regex = Regex("\\d+")
+            val matchResult = regex.find(id)
+            matchResult?.value?.toIntOrNull()
+        }
     }
-
-
 }

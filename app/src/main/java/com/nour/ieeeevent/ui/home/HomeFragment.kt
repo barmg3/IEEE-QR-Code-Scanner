@@ -1,40 +1,35 @@
 package com.nour.ieeeevent.ui.home
 
-import android.content.ContentValues
-import android.content.Intent
-import android.net.Uri
+import android.Manifest
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.ActivityResult
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.nour.ieeeevent.R
 import com.nour.ieeeevent.databinding.FragmentHomeBinding
-import com.nour.ieeeevent.ui.home.scanner.QRCodeResult
-import com.nour.ieeeevent.ui.home.scanner.QRCodeScanner
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-
-import java.io.IOException
+import dagger.hilt.android.AndroidEntryPoint
 
 
-class HomeFragment : Fragment(), QRCodeResult {
 
-    lateinit var binding : FragmentHomeBinding
-    private lateinit var cameraRegister : ActivityResultLauncher<Intent>
-    private lateinit var uriImage : Uri
-    private  val viewModel : HomeViewModel by sharedViewModel ()
-    private lateinit var  qrCodeScanner : QRCodeScanner
+@AndroidEntryPoint
+class HomeFragment : Fragment() {
+
+    private lateinit var binding: FragmentHomeBinding
+    private lateinit var permissionRegister: ActivityResultLauncher<String>
+    private val viewModel: HomeViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-         binding = FragmentHomeBinding.inflate(inflater)
-        qrCodeScanner= QRCodeScanner(requireContext(),this)
-
+    ): View {
+        binding = FragmentHomeBinding.inflate(inflater)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
@@ -42,31 +37,57 @@ class HomeFragment : Fragment(), QRCodeResult {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        cameraRegister =registerForActivityResult(ActivityResultContracts.StartActivityForResult(),this::galleryResult)
         binding.scannerButton.setOnClickListener(this::openCamera)
-
-
+        permissionRegister = registerForActivityResult(
+            ActivityResultContracts.RequestPermission(),
+            this::permissionResult
+        )
+        binding.changeSheet.setOnClickListener { showDialog() }
+        viewModel.uiState.observe(viewLifecycleOwner) {
+            it.errorMessage?.let {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
-    private fun openCamera(view: View){
-        cameraRegister.launch(getCameraIntent())
-        viewModel.clearDataFromUi()
+    private fun openCamera(view: View) {
+        permissionRegister.launch(Manifest.permission.CAMERA)
     }
 
-    private fun getCameraIntent():Intent{
-        uriImage = requireActivity().contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, ContentValues())!!
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        intent.putExtra(MediaStore.EXTRA_OUTPUT,uriImage)
-        return intent
+    private fun permissionResult(grant: Boolean) {
+        if (grant)
+            openCameraX()
+        else
+            showToastPermissionDenied()
     }
 
-    private fun galleryResult(activityResult: ActivityResult) = try{
-        qrCodeScanner.getTextQrCodes(uriImage)
-    }catch (e : IOException){}
-
-    override fun getQRCodeResult(id: Int) {
-         viewModel.getAttenderFromDB(id)
+    private fun showToastPermissionDenied() {
+        Toast.makeText(requireContext(), getText(R.string.permissionDenied), Toast.LENGTH_LONG)
+            .show()
     }
+
+    private fun openCameraX() {
+        viewModel.clearData()
+        findNavController().navigate(R.id.action_homeFragment_to_cameraXFragment)
+    }
+
+    private fun showDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setMessage(requireContext().getString(R.string.delete_old_data))
+            .setPositiveButton("Yes") { dialog, which ->
+                viewModel.deleteAllAttenders()
+                goToSheetDataFragment()
+            }
+            .setNegativeButton("No") { dialog, which ->
+                goToSheetDataFragment()
+            }
+            .show()
+    }
+
+    private fun goToSheetDataFragment() {
+        findNavController().navigate(R.id.action_homeFragment_to_sheetDataFragment)
+    }
+
 
 }
 
